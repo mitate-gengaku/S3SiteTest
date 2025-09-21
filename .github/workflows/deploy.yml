@@ -1,0 +1,71 @@
+name: "AWS Deploy"
+
+on:
+  push
+  # pull_request: 
+  #   branches: 
+  #     - main
+  #   types: ["closed"]
+
+env:
+  AWS_REGION : "ap-northeast-1"
+  AWS_ROLE_ARN: ${{ secrets.AWS_ROLE_ARN }}
+
+permissions:
+  id-token: write
+  contents: write
+
+jobs:
+  lint:
+    # if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Use nodejs
+        uses: actions/setup-node@v4
+
+      - name: Run lint
+        run: echo "lint" # npm run lint
+
+  test:
+    # if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Use nodejs
+        uses: actions/setup-node@v4
+
+      - name: Run test
+        run: echo "test" # npm run lint
+
+  
+  deploy:
+    # if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Use nodejs
+        uses: actions/setup-node@v4
+
+      - name: Run lint
+        run: echo "lint"
+
+      - name: Configure aws credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ env.AWS_REGION }}
+          aws-region: ${{ env.AWS_REGION }}
+      
+      - name: Test s3 connection
+        run: |
+          aws s3 ls
+          echo "✅ AWS S3 connection successful!"
