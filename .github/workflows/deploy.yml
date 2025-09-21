@@ -62,10 +62,10 @@ jobs:
       - name: Configure aws credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: ${{ env.AWS_REGION }}
+          role-to-assume: ${{ env.AWS_ROLE_ARN }}
           aws-region: ${{ env.AWS_REGION }}
       
       - name: Test s3 connection
         run: |
           aws s3 ls
-          echo "✅ AWS S3 connection successful!"
+          echo "AWS S3 connection successful!"
