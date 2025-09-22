@@ -22,7 +22,7 @@ jobs:
     timeout-minutes: 10
     defaults:
       run:
-        working-directory: ./app
+        working-directory: "./app"
 
     steps:
       - name: Checkout
@@ -44,7 +44,7 @@ jobs:
     timeout-minutes: 10
     defaults:
       run:
-        working-directory: ./app
+        working-directory: "./app"
     permissions:
       pull-requests: write
 
@@ -64,6 +64,8 @@ jobs:
       - name: Report coverage
         if: always()
         uses: davelosert/vitest-coverage-report-action@v2
+        with:
+          - working-directory: "./app"
 
 
   build:
@@ -74,7 +76,7 @@ jobs:
     timeout-minutes: 10
     defaults:
       run:
-        working-directory: ./app
+        working-directory: "./app"
 
     steps:
       - name: Checkout
@@ -95,7 +97,7 @@ jobs:
     runs-on: ubuntu-latest
     # defaults:
     #   run:
-    #     working-directory: ./app
+    #     working-directory: "./app"
 
     steps:
       - name: Checkout
