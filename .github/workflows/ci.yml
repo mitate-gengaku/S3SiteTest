@@ -24,7 +24,7 @@ jobs:
     timeout-minutes: 10
     defaults:
       run:
-        working-directory: ./app
+        working-directory: "./app"
 
     steps:
       - name: Checkout
@@ -45,7 +45,7 @@ jobs:
     timeout-minutes: 10
     defaults:
       run:
-        working-directory: ./app
+        working-directory: "./app"
     permissions:
       pull-requests: write
 
