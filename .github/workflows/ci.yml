@@ -1,0 +1,69 @@
+name: "Lint and Test"
+
+on:
+  pull_request: 
+    branches: 
+      - main
+    types: 
+      - "opened"
+      - "synchronize"
+      - "reopened"
+
+env:
+  AWS_REGION : "ap-northeast-1"
+  AWS_ROLE_ARN: ${{ secrets.AWS_ROLE_ARN }}
+
+permissions:
+  id-token: write
+  contents: write
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: ./app
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Use nodejs
+        uses: actions/setup-node@v4
+
+      - name: Install deps
+        run: npm ci
+        
+      - name: Run lint
+        run: npm run lint
+
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: ./app
+    permissions:
+      pull-requests: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Use nodejs
+        uses: actions/setup-node@v4
+
+      - name: Install deps
+        run: npm ci
+        
+      - name: Run test
+        run: npm run test
+      
+      - name: Report coverage
+        if: always()
+        uses: davelosert/vitest-coverage-report-action@v2
+        with:
+          working-directory: "./app"

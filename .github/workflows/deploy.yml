@@ -1,11 +1,10 @@
 name: "AWS Deploy"
 
 on:
-  push
-  # pull_request: 
-  #   branches: 
-  #     - main
-  #   types: ["closed"]
+  pull_request: 
+    branches: 
+      - main
+    types: closed
 
 env:
   AWS_REGION : "ap-northeast-1"
@@ -17,8 +16,13 @@ permissions:
 
 jobs:
   lint:
-    # if: github.event.pull_request.merged == true
+    if: github.event.pull_request.merged == true
+    name: Lint
     runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: ./app
 
     steps:
       - name: Checkout
@@ -27,12 +31,22 @@ jobs:
       - name: Use nodejs
         uses: actions/setup-node@v4
 
+      - name: Install deps
+        run: npm ci
+        
       - name: Run lint
-        run: echo "lint" # npm run lint
+        run: npm run lint
 
   test:
-    # if: github.event.pull_request.merged == true
+    if: github.event.pull_request.merged == true
+    name: Test
     runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: ./app
+    permissions:
+      pull-requests: write
 
     steps:
       - name: Checkout
@@ -41,13 +55,26 @@ jobs:
       - name: Use nodejs
         uses: actions/setup-node@v4
 
+      - name: Install deps
+        run: npm ci
+        
       - name: Run test
-        run: echo "test" # npm run lint
+        run: npm run test
+      
+      - name: Report coverage
+        if: always()
+        uses: davelosert/vitest-coverage-report-action@v2
 
-  
-  deploy:
-    # if: github.event.pull_request.merged == true
+
+  build:
+    needs: ["lint", "test"]
+    if: github.event.pull_request.merged == true
+    name: Build
     runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: ./app
 
     steps:
       - name: Checkout
@@ -56,8 +83,23 @@ jobs:
       - name: Use nodejs
         uses: actions/setup-node@v4
 
-      - name: Run lint
-        run: echo "lint"
+      - name: Install deps
+        run: npm ci
+        
+      - name: Run build
+        run: npm run build
+
+  deploy:
+    needs: ["lint", "test", "build"]
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    # defaults:
+    #   run:
+    #     working-directory: ./app
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
 
       - name: Configure aws credentials
         uses: aws-actions/configure-aws-credentials@v4
