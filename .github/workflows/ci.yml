@@ -1,10 +1,13 @@
-name: "AWS Deploy"
+name: "Lint and Test"
 
 on:
   pull_request: 
     branches: 
       - main
-    types: closed
+    types: 
+      - "opened"
+      - "synchronize"
+      - "reopened"
 
 env:
   AWS_REGION : "ap-northeast-1"
@@ -16,7 +19,6 @@ permissions:
 
 jobs:
   lint:
-    if: github.event.pull_request.merged == true
     name: Lint
     runs-on: ubuntu-latest
     timeout-minutes: 10
@@ -38,7 +40,6 @@ jobs:
         run: npm run lint
 
   test:
-    if: github.event.pull_request.merged == true
     name: Test
     runs-on: ubuntu-latest
     timeout-minutes: 10
@@ -62,26 +63,3 @@ jobs:
       - name: Report coverage
         if: always()
         uses: develosert/vitest-coverage-report-action@v2
-
-  deploy:
-    needs: ["lint", "test"]
-    if: github.event.pull_request.merged == true
-    runs-on: ubuntu-latest
-    # defaults:
-    #   run:
-    #     working-directory: ./app
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Configure aws credentials
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          role-to-assume: ${{ env.AWS_ROLE_ARN }}
-          aws-region: ${{ env.AWS_REGION }}
-      
-      - name: Test s3 connection
-        run: |
-          aws s3 ls
-          echo "AWS S3 connection successful!"
