@@ -65,7 +65,7 @@ jobs:
         if: always()
         uses: davelosert/vitest-coverage-report-action@v2
         with:
-          - working-directory: "./app"
+          working-directory: "./app"
 
 
   build:
