@@ -4,7 +4,6 @@ resource "aws_s3_bucket" "static_static_bucket" {
   force_destroy = true
 
   tags = merge(var.default_tags, {
-    Name    = var.s3_bucket_name
     Service = "S3"
   })
 }
