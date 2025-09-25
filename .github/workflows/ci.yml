@@ -17,6 +17,8 @@ env:
 permissions:
   id-token: write
   contents: write
+  pull-requests: write
+  issues: write
 
 jobs:
   lint:
@@ -83,10 +85,6 @@ jobs:
       TF_VAR_s3_bucket_name: ${{ secrets.S3_BUCKET_NAME  }}
       TF_VAR_website_domain: ${{ secrets.WEBSITE_DOMAIN  }}
 
-    permissions:
-      contents: write
-      pull-requests: write
- 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
