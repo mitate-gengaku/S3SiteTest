@@ -103,13 +103,13 @@ jobs:
         run: terraform fmt -check -diff
 
       - name: Terraform init
-        working-directory: "./terraform/prod"
         run: |
+          rm -rf .terraform/
           terraform init \
-            -migrate-state \
             -backend-config="bucket=${{ env.TFSTATE_BUCKET }}" \
             -backend-config="key=state/terraform.tfstate" \
-            -backend-config="region=${{ env.AWS_REGION  }}"
+            -backend-config="region=${{ env.AWS_REGION  }}" \
+            -backend-config="encrypt=true"
 
       - name: Terraform plan
         run: terraform plan
