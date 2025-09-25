@@ -138,12 +138,10 @@ jobs:
             #### Terraform Plan \`${{ steps.plan.outcome }}\`
             #### Terraform Validation \`${{ steps.validate.outcome }}\`
 
-            <details>
-              <summary>terraform planの結果</summary>
+            <details><summary>Terraform Plan</summary>
 
-            \`\`\`\n
-              terraform\`n${{ steps.plan.outputs.stdout }}
-            \`\`\`
+            \`\`\`${process.env.PLAN}\`\`\`
+
             </details>`;
 
             github.rest.issues.createComment({
