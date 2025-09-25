@@ -80,7 +80,7 @@ variable "allow_locations" {
 variable "default_tags" {
   type = map(string)
   default = {
-    "Environment" = "Development"
+    "Environment" = "Production"
     "Author"      = "Mitate Gengaku"
     "Owner"       = "Mitate Gengaku"
     "Project"     = "S3 Static Site"
