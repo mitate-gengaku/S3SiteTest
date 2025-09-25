@@ -126,8 +126,11 @@ jobs:
         uses: actions/github-script@v4
         env:
           PLAN: terraform
-
+        permissions:
+          issues: write
+          pull-requests: write
         with:
+          github-token: ${{ secrets.GITHUB_TOKEN  }}
           script: |
 
             const output = `### Terraformの各結果
