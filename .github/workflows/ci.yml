@@ -100,7 +100,7 @@ jobs:
 
       - name: Terraform init
         run: |
-          terraform init \
+          terraform init -reconfigure \
             -migrate-state \
             -backend-config="bucket=${{ env.TFSTATE_BUCKET }}" \
             -backend-config="key=state/terraform.tfstate" \
