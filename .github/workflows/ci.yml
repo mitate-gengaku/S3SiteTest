@@ -82,6 +82,10 @@ jobs:
       TF_VAR_github_repository: ${{ secrets.REPOSITORY_NAME }}
       TF_VAR_s3_bucket_name: ${{ secrets.S3_BUCKET_NAME  }}
       TF_VAR_website_domain: ${{ secrets.WEBSITE_DOMAIN  }}
+
+    permissions:
+      contents: write
+      pull-requests: write
  
     steps:
       - name: Checkout
@@ -126,9 +130,6 @@ jobs:
         uses: actions/github-script@v4
         env:
           PLAN: terraform
-        permissions:
-          issues: write
-          pull-requests: write
         with:
           github-token: ${{ secrets.GITHUB_TOKEN  }}
           script: |
