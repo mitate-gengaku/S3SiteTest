@@ -120,6 +120,7 @@ jobs:
       - name: Terraform plan
         id: plan
         run: terraform plan -no-color
+        continue-on-error: true
 
       - name: Preview plan result
         uses: actions/github-script@v4
