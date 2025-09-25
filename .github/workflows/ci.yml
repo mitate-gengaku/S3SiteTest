@@ -131,21 +131,21 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN  }}
           script: |
-            const output = `### Terraformの各結果
-            #### Terraform Format and Style \`${{ steps.fmt.outcome }}\`
-            #### Terraform Initialization \`${{ steps.init.outcome }}\`
-            #### Terraform Plan \`${{ steps.plan.outcome }}\`
-            #### Terraform Validation \`${{ steps.validate.outcome }}\`
+            #  const output = `### Terraformの各結果
+            #  #### Terraform Format and Style \`${{ steps.fmt.outcome }}\`
+            #  #### Terraform Initialization \`${{ steps.init.outcome }}\`
+            #  #### Terraform Plan \`${{ steps.plan.outcome }}\`
+            #  #### Terraform Validation \`${{ steps.validate.outcome }}\`
 
-            <details>
-              <summary>terraform planの結果</summary>
+            #  <details>
+            #    <summary>terraform planの結果</summary>
 
-            \`\`\`\n
-              ${process.env.PLAN}
-            \`\`\`
-            </details>`;
+            #  \`\`\`\n
+            #    ${process.env.PLAN}
+            #  \`\`\`
+            #  </details>`;
             
-            console.log(process.env.PLAN)
+            const output = \`${{ steps.plan.outputs  }}\`;
 
             github.rest.issues.createComment({
               issue_number: context.issue.number,
