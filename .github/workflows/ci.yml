@@ -125,7 +125,9 @@ jobs:
         continue-on-error: true
 
       - name: Preview plan result
-        uses: actions/github-script@v4
+        uses: actions/github-script@v6
+        env:
+          PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
         with:
           github-token: ${{ secrets.GITHUB_TOKEN  }}
           script: |
@@ -139,8 +141,9 @@ jobs:
             <details>
               <summary>terraform planの結果</summary>
 
-             \`${{ steps.plan.outputs.stdout }}\`
-
+            \`\`\`\n
+              ${process.env.PLAN}
+            \`\`\`
             </details>`;
 
             github.issues.createComment({
