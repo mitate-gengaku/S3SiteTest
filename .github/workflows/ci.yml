@@ -41,6 +41,7 @@ jobs:
         run: npm run lint
 
   test:
+    needs: ["lint"]
     name: Test
     runs-on: ubuntu-latest
     timeout-minutes: 10
@@ -70,6 +71,7 @@ jobs:
           working-directory: "./app"
 
   terraform:
+    needs: ["lint", "test"]
     name: Terraform
     runs-on: ubuntu-latest
     timeout-minutes: 10
@@ -100,10 +102,7 @@ jobs:
 
       - name: Terraform init
         run: |
-          terraform init -reconfigure \
-            -backend-config="bucket=${{ env.TFSTATE_BUCKET }}" \
-            -backend-config="key=state/terraform.tfstate" \
-            -backend-config="region=${{ env.AWS_REGION  }}"
+          terraform init
 
       - name: Terraform plan
         run: terraform plan
