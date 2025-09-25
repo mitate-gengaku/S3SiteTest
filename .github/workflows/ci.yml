@@ -127,7 +127,7 @@ jobs:
       - name: Preview plan result
         uses: actions/github-script@v4
         env:
-          PLAN: terraform
+          PLAN: "terraform\n${{ steps.plan.outputs.stdout  }}"
         with:
           github-token: ${{ secrets.GITHUB_TOKEN  }}
           script: |
