@@ -139,7 +139,7 @@ jobs:
             <details>
               <summary>terraform planの結果</summary>
 
-             \`\`\`${{ steps.plan.outputs.stdout }}\`\`\`
+             \`${{ steps.plan.outputs.stdout }}\`
 
             </details>`;
 
