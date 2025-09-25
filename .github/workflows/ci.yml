@@ -100,16 +100,50 @@ jobs:
           terraform_wrapper: false
 
       - name: Terraform format
-        run: terraform fmt -check -diff
+        id: fmt
+        run: terraform fmt -recursive -check -diff
+        continue-on-error: true
 
       - name: Terraform init
+        id: init
         run: |
-          rm -rf .terraform/
           terraform init \
             -backend-config="bucket=${{ env.TFSTATE_BUCKET }}" \
             -backend-config="key=state/terraform.tfstate" \
             -backend-config="region=${{ env.AWS_REGION  }}" \
             -backend-config="encrypt=true"
 
+      - name: Terraform validate
+        id: validate
+        run: terraform validate -no-color
+
       - name: Terraform plan
-        run: terraform plan
+        id: plan
+        run: terraform plan -no-color
+
+      - name: Preview plan result
+        uses: actions/github-script@v4
+        env:
+          PLAN: terraform
+
+        with:
+          script: |
+
+            const output = `### Terraformの各結果
+            #### Terraform Format and Style \`${{ steps.fmt.outcome }}\`
+            #### Terraform Initialization \`${{ steps.init.outcome }}\`
+            #### Terraform Plan \`${{ steps.plan.outcome }}\`
+            #### Terraform Validation \`${{ steps.validate.outcome }}\`
+
+            <details><summary>terraform planの結果</summary>
+
+            \`\`\`${process.env.PLAN}\`\`\`
+
+            </details>`;
+
+            github.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: output
+            })
