@@ -104,7 +104,7 @@ jobs:
       - name: Terraform format
         id: fmt
         run: terraform fmt -recursive -check -diff
-        continue-on-error: true
+          # continue-on-error: true
 
       - name: Terraform init
         id: init
