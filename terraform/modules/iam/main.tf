@@ -26,7 +26,7 @@ resource "aws_iam_role" "oidc_role" {
   })
 }
 
-resource "aws_iam_role_policy_attachment" "tmp" {
+resource "aws_iam_role_policy_attachment" "policy" {
   role       = aws_iam_role.oidc_role.name
-  policy_arn = "arn:aws:iam::aws:policy/AmazonS3FullAccess"
+  policy_arn = "arn:aws:iam::aws:policy/AdministratorAccess"
 }
