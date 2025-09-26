@@ -43,6 +43,8 @@ resource "aws_cloudfront_distribution" "static_site_distribution" {
 
   web_acl_id = var.waf_id
 
+  default_root_object = "index.html"
+
   tags = merge(var.default_tags, {
     Name    = "static-site-distribution"
     Service = "CloudFront"
