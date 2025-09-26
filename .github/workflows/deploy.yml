@@ -139,6 +139,6 @@ jobs:
         id: validate
         run: terraform validate -no-color
 
-      - name: Terraform plan
+      - name: Terraform apply
         id: apply
         run: terraform apply -auto-approve
