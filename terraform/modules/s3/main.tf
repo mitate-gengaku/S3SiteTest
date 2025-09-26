@@ -8,6 +8,14 @@ resource "aws_s3_bucket" "static_static_bucket" {
   })
 }
 
+resource "aws_s3_bucket_website_configuration" "website" {
+  bucket = aws_s3_bucket.static_static_bucket.bucket
+
+  index_document {
+    suffix = "index.html"
+  }
+}
+
 resource "aws_s3_bucket_ownership_controls" "static_site_boc" {
   bucket = aws_s3_bucket.static_static_bucket.id
 
