@@ -119,7 +119,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: app-dist
-          path: app/dist
+          path: ./terraform/prod
 
       - name: Configure aws credentials
         uses: aws-actions/configure-aws-credentials@v4
@@ -158,4 +158,4 @@ jobs:
       - name: Deploy build files to S3
         id: upload
         run: |
-          aws s3 sync app/dist s3:${{ secrets.S3_BUCKET_NAME }} --delete
+          aws s3 sync app-dist s3:${{ secrets.S3_BUCKET_NAME }} --delete
