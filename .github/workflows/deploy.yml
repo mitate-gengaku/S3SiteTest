@@ -95,8 +95,8 @@ jobs:
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: app-build
-          path: ./app/dist/
+          name: app-dist
+          path: app/dist/
 
   deploy:
     needs: ["lint", "test", "build"]
@@ -118,8 +118,8 @@ jobs:
       - name: Download build artifacts
         uses: actions/download-artifact@v4
         with:
-          name: app-build
-          path: ./app/dist
+          name: app-dist
+          path: app/dist
 
       - name: Configure aws credentials
         uses: aws-actions/configure-aws-credentials@v4
@@ -158,4 +158,4 @@ jobs:
       - name: Deploy build files to S3
         id: upload
         run: |
-          aws s3 sync ./app-build s3:${{ env.S3_BUCKET_NAME }} --delete
+          aws s3 sync app/dist s3:${{ env.S3_BUCKET_NAME }} --delete
