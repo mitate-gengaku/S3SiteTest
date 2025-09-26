@@ -9,6 +9,7 @@ on:
 env:
   AWS_REGION : "ap-northeast-1"
   AWS_ROLE_ARN: ${{ secrets.AWS_ROLE_ARN }}
+  TFSTATE_BUCKET: ${{ secrets.TFSTATE_BUCKET }}
 
 permissions:
   id-token: write
